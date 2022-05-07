@@ -1,0 +1,47 @@
+import mongoose from "mongoose";
+import { models } from "./models.js";
+
+const { MONGODB_URL, NODE_ENV } = process.env;
+
+if (!MONGODB_URL) {
+  if (NODE_ENV === "production") {
+    throw new Error(
+      "Please define the MONGODB_URL environment variable — pointing to your full connection string, including database name."
+    );
+  } else {
+    throw new Error(
+      "Please define the MONGODB_URL environment variable inside an .env file — pointing to your full connection string, including database name."
+    );
+  }
+}
+export default async function connectDb() {
+  if (mongoose.connection.readyState > 0) {
+    if (NODE_ENV === "development") {
+      for (const model of models) {
+        mongoose.connection.deleteModel(model.name);
+        mongoose.connection.model(model.name, model.schema, model.collection);
+      }
+    }
+
+    return mongoose.connection;
+  }
+
+  mongoose.connection.on("connected", () => {
+    console.log("Mongoose connected, NODE_ENV=%s", NODE_ENV);
+  });
+
+  mongoose.connection.on("disconnected", () => {
+    console.log("Mongoose DISCONNECTED, NODE_ENV=%s", NODE_ENV);
+  });
+
+  await mongoose.connect(MONGODB_URL, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  });
+
+  for (const model of models) {
+    mongoose.connection.model(model.name, model.schema, model.collection);
+  }
+
+  return mongoose.connection;
+}
