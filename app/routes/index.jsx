@@ -39,7 +39,7 @@ export default function Index() {
     <>
       <Form method="get" className="mb-6" onChange={handleChange}>
         <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
         >
           Sort by: 
         </label>

@@ -20,7 +20,7 @@ export const meta = () => ({
 });
 
 export function links() {
-  return [{ rel: "stylesheet", href: styles }]
+  return [{ rel: "stylesheet", href: styles }, { rel: "manifest", href: '/manifest.json'}, { rel: "apple-touch-icon", href: "/images/icon-72x72.png"}]
 }
 
 export default function App() {
