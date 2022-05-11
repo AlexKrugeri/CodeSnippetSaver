@@ -27,7 +27,7 @@ export default function SnippetPage() {
       <div className="md:w-1/3 lg:w-1/4 grow md:mr-6">
         <div className="mb-6">
           <p
-            for="title"
+            htmlFor="title"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
           >
             Title
@@ -38,7 +38,7 @@ export default function SnippetPage() {
         </div>
         <div className="mb-6">
           <p
-            for="description"
+            htmlFor="description"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
           >
             Description

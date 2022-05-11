@@ -35,7 +35,7 @@ export default function CreateSnippet() {
         <div className="md:w-1/3 lg:w-1/4 grow md:mr-6">
           <div className="mb-6">
             <label
-              for="title"
+              htmlFor="title"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
               Title
@@ -49,7 +49,7 @@ export default function CreateSnippet() {
           </div>
           <div className="mb-6">
             <label
-              for="description"
+              htmlFor="description"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
             >
               Description
@@ -62,7 +62,7 @@ export default function CreateSnippet() {
           </div>
           <div className="mb-6">
             <label
-              for="language"
+              htmlFor="language"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
             >
               Programming language
@@ -111,7 +111,7 @@ export default function CreateSnippet() {
               </span>
             </div>
             <label
-              for="remember"
+              htmlFor="remember"
               className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
               Favorite
@@ -126,7 +126,7 @@ export default function CreateSnippet() {
         </div>
         <div className="md:w-2/3 lg:w-3/4 grow">
           <label
-            for="description"
+            htmlFor="description"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
           >
             Snippet
