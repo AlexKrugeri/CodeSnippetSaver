@@ -1,13 +1,25 @@
-import { Form, useActionData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import { redirect, json } from "@remix-run/node";
 import { useState } from "react";
 import connectDb from "~/db/connectDb.server";
+
+export async function loader({ params }) {
+  const db = await connectDb();
+  const snippet = await db.models.Snippet.findById(params.snippetId);
+  if (!snippet) {
+    throw new Response("Not Found", {
+      status: 404,
+    });
+  }
+  return json(snippet);
+}
 
 export async function action({ request, params }) {
   const formData = await request.formData();
   const db = await connectDb();
   try {
-    formData.get("favorite") === "on" ? true : false;
+    let isFavorite = formData.get("favorite") === "on" ? true : false;
+    formData.set('favorite', `${isFavorite}`);
     await db.models.Snippet.findByIdAndUpdate(params.snippetId, Object.fromEntries(formData));
     return redirect(`/snippets/${params.snippetId}`);
   } catch (error) {
@@ -19,8 +31,9 @@ export async function action({ request, params }) {
 }
 
 export default function CreateSnippet() {
-  const [isChecked, setIsChecked] = useState(false);
-  const actionData = useActionData();
+  const snippet = useLoaderData();
+  console.log(snippet.favorite);
+  const [isChecked, setIsChecked] = useState(snippet.favorite);
   return (
     <Form method="post" className="w-full">
       <h1 className="m-6 font-bold text-center">Edit snippet</h1>
@@ -34,6 +47,7 @@ export default function CreateSnippet() {
               Title
             </label>
             <input
+              defaultValue={snippet.title}
               name="title"
               type="text"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -49,6 +63,7 @@ export default function CreateSnippet() {
             </label>
             <textarea
               name="description"
+              defaultValue={snippet.description}
               rows="3"
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             ></textarea>
@@ -61,6 +76,7 @@ export default function CreateSnippet() {
               Programming language
             </label>
             <select
+            defaultValue={snippet.language}
               name="language"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
@@ -79,18 +95,19 @@ export default function CreateSnippet() {
           <div className="flex items-start mb-6">
             <div className="flex items-center h-5">
               <input
+              key={snippet.id}
                 name="favorite"
                 type="checkbox"
-                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 invisible"
                 checked={isChecked}
-                onChange={() => setIsChecked(!isChecked)}
+              onChange={() => setIsChecked(!isChecked)}
+                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
               />
               <span className="text-indigo-600">
                 <svg
                   onClick={() => setIsChecked(!isChecked)}
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
-                  fill={isChecked ? "currentColor" : "none"}
+                  fill={isChecked ? "currentColor" : 'none'}
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -125,6 +142,7 @@ export default function CreateSnippet() {
             Snippet
           </label>
           <textarea
+          defaultValue={snippet.code}
             name="code"
             rows="18"
             className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
