@@ -28,7 +28,6 @@ export async function action({ request }) {
 export default function CreateSnippet() {
   const [isChecked, setIsChecked] = useState(false);
   const actionData = useActionData();
-  console.log(isChecked);
   return (
     <Form method="post" className="w-full">
       <h1 className="m-6 font-bold text-center">Create a new snippet</h1>
