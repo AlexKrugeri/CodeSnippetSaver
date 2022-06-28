@@ -1,7 +1,8 @@
 const version = "0.0.1";
-const staticCache = `static-${version}`;
+//const staticCache = `static-${version}`;
 const dynamicCache = `dynamic-${version}`;
 
+//not supported by explorer
 self.addEventListener("install", (e) => {
   console.log("SW 'install' event");
   // e.waitUntil(

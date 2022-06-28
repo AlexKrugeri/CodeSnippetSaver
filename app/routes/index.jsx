@@ -1,4 +1,11 @@
-import { Form, useLoaderData, Link, Outlet, useSubmit, useSearchParams } from "@remix-run/react";
+import {
+  Form,
+  useLoaderData,
+  Link,
+  Outlet,
+  useSubmit,
+  useSearchParams,
+} from "@remix-run/react";
 import connectDb from "~/db/connectDb.server.js";
 
 import Table from "../components/Table";
@@ -38,12 +45,10 @@ export default function Index() {
   return (
     <>
       <Form method="get" className="mb-6" onChange={handleChange}>
-        <label
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-        >
-          Sort by: 
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+          Sort by:
         </label>
-        <input name="search" value={search} hidden/>
+        <input name="search" value={search} hidden />
         <select
           name="sort"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
