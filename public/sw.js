@@ -13,7 +13,7 @@ self.addEventListener("install", (e) => {
 
 self.addEventListener("activate", (event) => {
   console.log("SW 'activate' event");
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(self.clients.claim()); //
 });
 
 // self.addEventListener("fetch", (event) => {
@@ -70,3 +70,23 @@ async function networkFallbackToCache(event) {
     return caches.match(event.request);
   });
 }
+
+// Establish a cache name
+const cacheName = "myCaching";
+//cache first strategy -
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.open(cacheName).then((cache) => {
+      return cache.match(event.request).then((cachedResponse) => {
+        const fetchedResponse = fetch(event.request).then((networkResponse) => {
+          if (networkResponse.ok == true) {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          }
+        });
+
+        return cachedResponse || fetchedResponse;
+      });
+    })
+  );
+});

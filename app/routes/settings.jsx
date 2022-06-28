@@ -1,5 +1,3 @@
-export default function Settings(){
-    return(
-        <h1>Settings. Coming soon... or potentially never</h1>
-    );
+export default function Settings() {
+  return <h1></h1>;
 }

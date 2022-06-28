@@ -3,8 +3,10 @@ import { hydrate } from "react-dom";
 
 hydrate(<RemixBrowser />, document);
 
-if('serviceWorker' in navigator) {
-    navigator.serviceWorker
-         .register('/sw.js')
-         .then(function() { console.log("Service Worker Registered"); });
+//check if service worker exists, and then registers it
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js").then(function () {
+    console.log("Service Worker Registered");
+  });
 }
